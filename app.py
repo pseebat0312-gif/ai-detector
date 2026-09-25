@@ -39,6 +39,8 @@ def simple_ai_score(text):
     ai_score = min(max(ai_score, 0.0), 1.0)
     return ai_score, burstiness, diversity
 
+language = st.selectbox("选择语言：", ["español","English","中文"])
+
 text_input = st.text_area("输入文本：", height=200, placeholder="在这里粘贴要检测的文本...")
 
 if st.button("检测", type="primary"):
