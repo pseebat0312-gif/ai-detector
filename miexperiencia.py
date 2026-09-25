@@ -1,14 +1,4 @@
 # 你的“经验规则库”
-def check_my_experience(text):
-    issues=[]
-    text_lower = text.lower()
-
-    if "jugar un papel importante" in text_lower:
-        issues.append("中式直译：'jugar un papel importante' 是英文/中文的直译，西班牙语母语者不会这样写！")
-    if text_lower.count("en primer lugar") >=2:
-        issues.append("过度连接词：'en primer lugar' 出现过多，建议用逻辑递进代替~")
-    return issues
-
 my_rules = {
     "过度连接词": {
         "patterns": ["en primer lugar", "en segundo lugar", "por último"],
@@ -39,3 +29,26 @@ my_rules = {
         "message": "西班牙语中过度使用“en cuanto a”会显得生硬，建议使用其他表达方式"
     },
 }
+
+def check_my_experience(text,language):
+    issues=[]
+    if language!="español":
+        return issues
+    
+    text_lower = text.lower()
+
+    if "jugar un papel importante" in text_lower:
+        issues.append("中式直译：'jugar un papel importante' 是英文/中文的直译，西班牙语母语者不会这样写！")
+    if text_lower.count("en primer lugar") >=2:
+        issues.append("过度连接词：'en primer lugar' 出现过多，建议用逻辑递进代替~")
+    for rule_name, rule in my_rules.items():
+        if "patterns" in rule:
+            for pattern in rule["patterns"]:
+                if pattern in text_lower:
+                    issues.append(f"{rule_name}：{rule['message']}")
+                    break
+        elif "check" in rule:
+            if not rule["check"](text):
+                issues.append(f"{rule_name}：{rule['message']}")
+    return issues
+

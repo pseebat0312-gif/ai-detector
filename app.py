@@ -55,6 +55,15 @@ if st.button("检测", type="primary"):
             st.warning(f"⚠️ **可能是 AI 生成**（可能性：{ai_prob:.2%}）")
         else:
             st.success(f"✍️ **人类书写**（可能性：{(1-ai_prob):.2%}）")
+
+        my_issues = check_my_experience(text_input, language)
+        if my_issues:
+            st.divider()
+            st.subheader("💡 **专属修改建议（基于beta自己的经验库）**：")
+            for issue in my_issues:
+                st.markdown(f"- {issue}")
+        else:
+            st.caption("💡 **根据beta的经验库**：未发现明显问题。")
         
         st.divider()
         st.caption("📊 底层分析数据（供参考）")
